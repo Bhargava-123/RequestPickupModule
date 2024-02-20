@@ -7,19 +7,22 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.resolve(path.dirname(__filename),"..");
-export default function requestPickupController(req, res){
-    const obj = {
-        img: {
-            data: fs.readFileSync(
-                path.join(__dirname + "/uploads/" + req.file.filename)
-            ),
-            contentType: "image/png",
-        },
-    };
+export default function requestPickupController(req, res) {
+    console.log(req.files);
+    const imageList = req.files.map((data) => {
+        return { data: data['buffer'], contentType: "image/png" }
+    });
+    // const obj = {
+    //     img: {
+    //         data: req.file['buffer'],
+    //         contentType: "image/png",
+    //     },
+    // };
     const request = new requestModel({
-        waste_image : obj.img,
+        waste_image : imageList,
     })
-    request.save().then((msg) => console.log(msg)).catch((err) => console.log(err));
-    res.send("File Saved");
+    request.save().then(
+        () => res.status(200).send({ "msg": "Request Successful" })
+    ).catch((err) => res.status(400).send({ "msg": "Request Failed" }));
 }
 

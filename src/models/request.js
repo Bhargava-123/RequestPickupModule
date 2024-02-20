@@ -11,11 +11,10 @@ const requestSchema = new Schema({
     waste_tags: [String],
     address: String,
     pickup_date: Date,
-    waste_image: {
+    waste_image: [{
         data: Buffer,
         contentType: String
-    }
-    
+    }]
 }, { timestamps: true })
 
 const requestModel = mongoose.model("request", requestSchema);

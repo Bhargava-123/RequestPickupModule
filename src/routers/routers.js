@@ -5,7 +5,7 @@ import { upload } from '../middlewares/imageMiddleware.js';
 
 const router = new Router();
 //upload.single("<name>") should be same as name="<name>" in html.
-router.post("/request-pickup", upload.single("myImage"), requestPickupController);
+router.post("/request-pickup", upload.array("myImage",5), requestPickupController);
 
 router.get("/home", (req, res) => {
     res.render("app");
